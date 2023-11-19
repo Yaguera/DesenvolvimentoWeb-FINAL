@@ -1,17 +1,13 @@
-import logo from './logo.svg';
+
 import './App.css';
-import Welcome from './components/welcome/Welcome';
+import Header from './components/header/Header';
+import Section from './components/section/Section'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Welcome />
-      </header>
+    <div className='App'>
+      <Header />
+      <Section />
     </div>
   );
 }
