@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tarefas</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    
+  </style>
+</head>
+<body>
+
+    <header>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <img src={Logo} alt="logo" />
+                    </a>
+                    <button class="navbar-toggler shadow-sm" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span clas="navbar-toggler-icon"></span>
+                    </button>
+                    <div  style="position: fixed;
+                    top: 10px;
+                    right: 10px;" class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="btn btn-danger" id="cadastro" href="#">CRIE SUA CONTA</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+    </header>
+
+
+<div class="container mt-5">
+  <h2>Lista de Tarefas</h2>
+
+  <div class="mb-3">
+    <button class="btn btn-danger" data-toggle="modal" data-target="#adicionarTarefaModal">Adicionar Tarefa</button>
+  </div>
+
+  <ul class="list-group" id="listaTarefas">
+    
+  </ul>
+</div>
+
+<!-- Modal para adicionar tarefa -->
+<div class="modal fade" id="adicionarTarefaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Adicionar Tarefa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formAdicionarTarefa">
+          <div class="form-group">
+            <label for="tarefaNome">Nome da Tarefa:</label>
+            <input type="text" class="form-control" id="tarefaNome" required>
+          </div>
+          <div class="form-group">
+            <label for="tarefaChecklist">Checklist:</label>
+            <textarea class="form-control" id="tarefaChecklist" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-danger">Adicionar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Elementos do DOM
+    const formAdicionarTarefa = document.getElementById("formAdicionarTarefa");
+    const listaTarefas = document.getElementById("listaTarefas");
+
+    // Adicionar tarefa
+    formAdicionarTarefa.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const tarefaNome = document.getElementById("tarefaNome").value;
+      const tarefaChecklist = document.getElementById("tarefaChecklist").value;
+
+      if (tarefaNome.trim() === "") {
+        alert("Por favor, insira o nome da tarefa.");
+        return;
+      }
+
+      const li = document.createElement("li");
+      li.className = "list-group-item d-flex justify-content-between align-items-center";
+      li.innerHTML = `
+        <div>
+          <strong>${tarefaNome}</strong>
+          <p>${tarefaChecklist}</p>
+        </div>
+        <div>
+          <button class="btn btn-warning btn-sm mr-2" onclick="editarTarefa(this)">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="removerTarefa(this)">Remover</button>
+        </div>
+      `;
+
+      listaTarefas.appendChild(li);
+      formAdicionarTarefa.reset();
+      $("#adicionarTarefaModal").modal("hide");
+    });
+
+    // Função para editar tarefa
+    window.editarTarefa = function (botaoEditar) {
+      const li = botaoEditar.closest("li");
+      const nome = li.querySelector("strong").innerText;
+      const checklist = li.querySelector("p").innerText;
+
+      // Preencher o modal de edição
+      document.getElementById("tarefaNome").value = nome;
+      document.getElementById("tarefaChecklist").value = checklist;
+
+      // Remover a tarefa da lista
+      li.remove();
+
+      // Abrir o modal de adicionar com os dados preenchidos
+      $("#adicionarTarefaModal").modal("show");
+    };
+
+    // Função para remover tarefa
+    window.removerTarefa = function (botaoRemover) {
+      const li = botaoRemover.closest("li");
+      li.remove();
+    };
+  });
+</script>
+
+</body>
+</html>
